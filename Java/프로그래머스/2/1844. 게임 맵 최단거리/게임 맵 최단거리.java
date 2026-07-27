@@ -1,45 +1,38 @@
 import java.util.*;
 
 class Solution {
-    int[] dx = new int[] {1,-1,0,0};
-    int[] dy = new int[] {0,0,1,-1};
-    boolean[][] visited;
-    
-    // bfs 쓰는 문제~
+    int[] xDir = new int[] {1,-1,0,0};
+    int[] yDir = new int[] {0,0,1,-1};
     public int solution(int[][] maps) {
-        int answer = -1;
-        int maxX = maps.length;
-        int maxY = maps[0].length;
-        
-        visited = new boolean[maxX][maxY];
-        
-        Deque<int[]> queue = new ArrayDeque<>();
-        
-        queue.offer(new int[] {0,0,1});
+        int answer = 0;
+        Deque<int[]> deque = new ArrayDeque<>();
+        boolean[][] visited = new boolean[maps.length][maps[0].length];
+        deque.offer(new int[] {0,0,1});
         visited[0][0] = true;
         
-        while(!queue.isEmpty()){
-            int[] current = queue.poll();
-            int x = current[0];
-            int y = current[1];
-            int distance = current[2];
-            if(x == maxX -1 && y  == maxY - 1){
-                answer = distance;
-                break;
-            }
+        while(!deque.isEmpty()){
+            int[] cur = deque.poll();
+            int curX = cur[0];
+            int curY = cur[1];
+            int dist = cur[2];
+            if(curX == maps.length - 1 && curY == maps[0].length - 1) return dist;
             
             for(int i = 0; i<4; i++){
-                int nx = x + dx[i];
-                int ny = y + dy[i];
+                int nx = curX + xDir[i];
+                int ny = curY + yDir[i];
                 
-                if(nx > -1 && nx <maxX && ny > -1 && ny < maxY && !visited[nx][ny] && maps[nx][ny] == 1){
+                if(
+                    nx > -1 && nx < maps.length && 
+                    ny > -1&& ny < maps[nx].length &&
+                    !visited[nx][ny] &&
+                    maps[nx][ny] == 1
+                  ){
                     visited[nx][ny] = true;
-                    queue.offer(new int[]{nx,ny,distance+1});
+                    deque.offer(new int[] {nx,ny, dist+1});
                 }
             }
         }
         
-        
-        return answer;
+        return -1;
     }
 }
