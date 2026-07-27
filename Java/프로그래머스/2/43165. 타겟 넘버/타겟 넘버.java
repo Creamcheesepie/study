@@ -1,17 +1,16 @@
 class Solution {
-    int count = 0;
     public int solution(int[] numbers, int target) {
-        dfs(numbers,target,0,0);
-        return count;
+        return dfs(numbers, target, 0, 0);
     }
     
-    private void dfs(int[] numbers, int target,int i,int total){
-        if(i == numbers.length){
-            if(total == target) count++;
-            return;
-        }
+    private int dfs(int[] numbers, int target, int level,int number){
+        if(level == numbers.length && number == target) return 1;
+        else if(level == numbers.length) return 0;
+        int max = 0;
         
-        dfs(numbers,target,i+1,total+numbers[i]);
-        dfs(numbers,target,i+1,total-numbers[i]);
+        max += dfs(numbers, target, level + 1, number + numbers[level]);
+        max += dfs(numbers, target, level + 1, number - numbers[level]);
+        
+        return max;
     }
 }
