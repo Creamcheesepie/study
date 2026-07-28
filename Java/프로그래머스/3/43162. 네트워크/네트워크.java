@@ -1,26 +1,23 @@
 class Solution {
-    boolean[] visited;
     public int solution(int n, int[][] computers) {
+        boolean[] visited= new boolean[n];
         int answer = 0;
-        visited = new boolean[n];
-        
         for(int i = 0; i<n; i++){
-            if(!visited[i])answer++;
-            dfs(computers,i);
+            if(!visited[i]) {
+                answer++;
+                visited[i] = true;
+                dfs(computers, i, visited);
+            }
         }
-        
-        System.out.println(answer);
-        
         return answer;
     }
     
-    //연결된 모든 컴퓨터를 체크만 하기!
-    private void dfs(int[][] computers,int n){
-        int[] current = computers[n];
-        for(int i = 0; i<current.length; i++){
-            if(!visited[i] && current[i] == 1){
+    private void dfs(int[][] computers, int idx, boolean[] visited){
+        int[] com = computers[idx];
+        for(int i = 0; i<com.length; i++){
+            if(com[i] == 1 && !visited[i]){
                 visited[i] = true;
-                dfs(computers,i);
+                dfs(computers, i, visited);
             }
         }
     }
