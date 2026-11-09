@@ -5,7 +5,6 @@ class Solution {
     
     private String to124String(int n){
         StringBuilder sb = new StringBuilder();
-        
         while(n > 0) {
             if(n % 3 == 0){
                 sb.insert(0,4);
