@@ -1,56 +1,59 @@
 import java.util.*;
 
 class Solution {
+    int[] wDir = new int[] {1,-1,0,0};
+    int[] hDir = new int[] {0,0,1,-1};
+    
     public int solution(String[] board) {
-        int hMax = board.length;
-        int wMax = board[0].length();
-        int[] hDir = new int[] {1,-1,0,0};
-        int[] wDir = new int[] {0,0,1,-1};
-        boolean[][] visited = new boolean[hMax][wMax];
-        Deque<int[]> queue = new ArrayDeque<>();
+        int answer = 0;
+        int width = board[0].length();
+        int height = board.length;
+        int[] start = new int[3];
+        boolean[][] visited = new boolean[height][width];
         
-        boolean flag = false;
-        for(int h = 0; h<hMax; h++){
-            for(int w = 0; w<wMax; w++){
+        Deque<int[]> deque = new ArrayDeque<>();
+        
+        for(int h = 0; h<height; h++){
+            for(int w = 0; w<width; w++){
                 if(board[h].charAt(w) == 'R'){
-                    queue.offer(new int[] {h,w,0});
-                    visited[h][w] = true;
-                    flag = true;
-                    break;
+                    start[0] = h;
+                    start[1] = w;
                 }
             }
-            if(flag) break;
         }
         
-        while(!queue.isEmpty()){
-            int[] current = queue.poll();
-            int h = current[0];
-            int w = current[1];
+        deque.offer(start);
+        while(!deque.isEmpty()){
+            int[] current = deque.poll();
+            int currentH = current[0];
+            int currentW = current[1];
             int cnt = current[2];
-            if(board[h].charAt(w) == 'G') return cnt;
+            if(board[currentH].charAt(currentW) == 'G') return cnt;
             
             for(int i = 0; i<4; i++){
-                int nh = h;
-                int nw = w;
+                int nh = current[0];
+                int nw = current[1];
                 while(true){
                     int th = nh + hDir[i];
                     int tw = nw + wDir[i];
                     if(
-                        th < 0 || th >= hMax ||
-                        tw < 0 || tw >= wMax ||
-                        board[th].charAt(tw) == 'D'
+                        th < 0 || th >= height ||
+                        tw < 0 || tw >= width ||
+                        board[nh + hDir[i]].charAt(nw + wDir[i]) == 'D'
                     ) break;
-                    nh = th;
-                    nw = tw;
+                    nh = nh + hDir[i];
+                    nw = nw + wDir[i];
                 }
                 
                 if(!visited[nh][nw]){
-                    queue.offer(new int[] {nh,nw,cnt+1});
+                    deque.offer(new int[]{nh,nw,cnt+1});
                     visited[nh][nw] = true;
                 }
             }
         }
-
+        
+        
+        
         return -1;
     }
 }
